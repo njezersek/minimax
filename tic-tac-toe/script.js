@@ -3,69 +3,58 @@ class Minimax{
     this.globina = 6; //pamet algoritma
   }
 
-  odlocitev(igra, n){
+  odlocitev(igra){
     	this.znak = igra.naPotezi;
       return this.rekurzivnoDrevo(igra, this.globina);
   }
 
-
   //rekurzivna funkcije, ki vrne seznam možnih potez in jih ovrednoti
   rekurzivnoDrevo(igra, n){
-    let moznosti = [];
     //poišči vse možne poteze
-    for(let j=0; j<igra.h; j++){
-      for(let i=0; i<igra.w; i++){
-        //če je polje prosto - možna poteza
-        if(igra.data[j][i] == " "){
-          //oceni potezo
-          let novaIgra = igra.copy();
-          novaIgra.postavi(i,j);
+    let moznosti = igra.moznosti();
 
-          //if(n==2)novaIgra.prikazi();
+    for(let l=0; l<moznosti.length; l++){
+      let moznost = moznosti[l];
 
-          let zmaga = novaIgra.ovrednoti();
+      //ovrednoti moznost
+      let novaIgra = igra.copy();
+      novaIgra.postavi(moznost.x, moznost.y);
+      let zmaga = novaIgra.ovrednoti();
 
-          //naredi moznost
-          let moznost = new Moznost(i,j);
-          moznost.oddaljenost = this.globina-n;
-          moznost.zmaga = zmaga;
-          if(zmaga == this.znak)moznost.vrednost = 1;
-          else if(zmaga == " ")moznost.vrednost = 0;
-          else moznost.vrednost = -1;
+      //nastavi moznost
+      moznost.oddaljenost = this.globina-n;
+      moznost.zmaga = zmaga;
+      if(zmaga == this.znak)moznost.vrednost = 1;
+      else if(zmaga == " ")moznost.vrednost = 0;
+      else moznost.vrednost = -1;
 
-          //če ni nihče zmagal in nisi še presegel globine
-          if(zmaga == " " && n-1>0 && novaIgra.prostaPolja() > 0){
-            let ovrednoteneMoznosti = this.rekurzivnoDrevo(novaIgra, n-1);
-            //izberi najboljšo od ovrednotenih možnosti
-            let imax = 0;
-            let max = -100;
-            let imin = 0;
-            let min = 100;
-            for(let k=0; k<ovrednoteneMoznosti.length; k++){
-              if(ovrednoteneMoznosti[k].vrednost > max){
-                max = ovrednoteneMoznosti[k].vrednost;
-                imax = k;
-              }
-              if(ovrednoteneMoznosti[k].vrednost < min){
-                min = ovrednoteneMoznosti[k].vrednost;
-                imin = k;
-              }
-            }
+      //če ni nihče zmagal in nisi še presegel globine
+      if(zmaga == " " && n-1>0 && novaIgra.prostaPolja() > 0){
+        let ovrednoteneMoznosti = this.rekurzivnoDrevo(novaIgra, n-1);
 
-            let index = novaIgra.naPotezi == this.znak ? imax : imin;
-
-            moznost.zmaga = ovrednoteneMoznosti[index].zmaga;
-            moznost.oddaljenost = ovrednoteneMoznosti[index].oddaljenost;
-
-            if(moznost.zmaga == this.znak)moznost.vrednost = 1;
-            else if(moznost.zmaga == " ")moznost.vrednost = 0;
-            else moznost.vrednost = -1;
-
-            //console.log(ovrednoteneMoznosti, novaIgra.naPotezi);
-            //console.log("najboljsaIzbira",moznost.vrednost,ovrednoteneMoznosti[index]);
+        //poišči min in max med ovrednotenimi možnostmi (veje)
+        let imax = 0;
+        let max = -100;
+        let imin = 0;
+        let min = 100;
+        for(let k=0; k<ovrednoteneMoznosti.length; k++){
+          if(ovrednoteneMoznosti[k].vrednost > max){
+            max = ovrednoteneMoznosti[k].vrednost;
+            imax = k;
           }
-          moznosti.push(moznost);
+          if(ovrednoteneMoznosti[k].vrednost < min){
+            min = ovrednoteneMoznosti[k].vrednost;
+            imin = k;
+          }
         }
+        let index = novaIgra.naPotezi == this.znak ? imax : imin;
+
+        moznost.zmaga = ovrednoteneMoznosti[index].zmaga;
+        moznost.oddaljenost = ovrednoteneMoznosti[index].oddaljenost;
+
+        if(moznost.zmaga == this.znak)moznost.vrednost = 1;
+        else if(moznost.zmaga == " ")moznost.vrednost = 0;
+        else moznost.vrednost = -1;
       }
     }
     return moznosti;
@@ -104,6 +93,18 @@ class Igra{
       }
     }
     return st;
+  }
+
+  moznosti(){
+    let moznosti = [];
+    for(let j=0; j<this.h; j++){
+      for(let i=0; i<this.w; i++){
+        if(this.data[j][i] == " "){
+          moznosti.push(new Moznost(i,j));
+        }
+      }
+    }
+    return moznosti;
   }
 
   ovrednoti(){
@@ -169,7 +170,7 @@ class Moznost{
     this.x = x;
     this.y = y;
     this.zmaga = " ";
-    this.vrednost = -2;
+    this.vrednost = -1;
     this.oddaljenost = 0;
   }
 }
@@ -178,11 +179,11 @@ const racunalnik = new Minimax();
 
 const igra = new Igra(3,3,"X");
 
-/*igra.data = [
+igra.data = [
   ["O"," ","O"],
   [" ","X","X"],
   ["X"," ","O"]
-];*/
+];
 
 
 igra.naPotezi = "X";
