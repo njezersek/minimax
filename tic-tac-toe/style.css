@@ -6,11 +6,11 @@ table {
 }
 
 td{
-  border: solid 20px black;
+  border: solid 10px black;
   width: 100px;
   height: 100px;
   text-align: center;
-  padding: 10px;
+  padding: 30px;
 }
 
 td div{
