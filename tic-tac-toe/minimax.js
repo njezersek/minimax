@@ -29,24 +29,15 @@ class Minimax{
       else moznost.vrednost = -1;
 
       //če ni nihče zmagal in nisi še presegel globine
+      //in je še kakšno prosto polje, lahko se zgodi da so vsa polja polna in
+      //je rezultat izenačeno potem pride error
       if(zmaga == " " && n-1>0 && novaIgra.prostaPolja() > 0){
         let ovrednoteneMoznosti = this.rekurzivnoDrevo(novaIgra, n-1);
 
         //poišči min in max med ovrednotenimi možnostmi (veje)
-        let imax = 0;
-        let max = -100;
-        let imin = 0;
-        let min = 100;
-        for(let k=0; k<ovrednoteneMoznosti.length; k++){
-          if(ovrednoteneMoznosti[k].vrednost > max){
-            max = ovrednoteneMoznosti[k].vrednost;
-            imax = k;
-          }
-          if(ovrednoteneMoznosti[k].vrednost < min){
-            min = ovrednoteneMoznosti[k].vrednost;
-            imin = k;
-          }
-        }
+        let vrednosti = ovrednoteneMoznosti.map(el => el.vrednost);
+        let imax = vrednosti.indexOf(Math.max(...vrednosti));
+        let imin = vrednosti.indexOf(Math.min(...vrednosti));
 
         //če je na motezi nasprotnik išči min drugače pa max
         let index = novaIgra.naPotezi == this.znak ? imax : imin;

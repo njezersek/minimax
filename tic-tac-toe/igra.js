@@ -54,7 +54,7 @@ class Igra{
     const n = 3; //koliko znakov mora biti v vrsti
     for(let j=0; j<this.h; j++){
       for(let i=0; i<this.w; i++){
-        let znak = this.data[j][i];
+        let znak = this.poglej(i,j);
 
         //če si na preznem polju ne preverjaj kdo je zmagal
         if(znak == " ")continue;
@@ -65,31 +65,11 @@ class Igra{
         let posevnoGor = true;
         let posevnoDol = true;
         for(let k=1; k<n; k++){
-          //preveri vodoravno
-          //če vrsta pade izven igralnega polja tukaj tudi ni zmage
-          if(i+k < this.w && j < this.h){
-            //če je vmes kakšen nepravilen znak ni zmage
-            if(this.data[j][i+k] != znak) vodoravno = false;
-          }
-          else vodoravno = false;
-
-          //preveri navpicno
-          if(i < this.w && j+k < this.h){
-            if(this.data[j+k][i] != znak) navpicno = false;
-          }
-          else {navpicno = false; }
-
-          //preveri posevno navzdol
-          if(i+k < this.w && j+k < this.h){
-            if(this.data[j+k][i+k] != znak) posevnoDol = false;
-          }
-          else posevnoDol = false;
-
-          //preveri posevno navzgor
-          if(i-k < this.w && j+k < this.h){
-            if(this.data[j+k][i-k] != znak) posevnoGor = false;
-          }
-          else posevnoGor = false;
+          //preveri vse 4 smeri, če je vmes kakšen nepravilen znak ni zmage
+          if(this.poglej(i+k, j) != znak) vodoravno = false;
+          if(this.poglej(i, j+k) != znak) navpicno = false;
+          if(this.poglej(i+k, j+k) != znak) posevnoDol = false;
+          if(this.poglej(i-k, j+k) != znak) posevnoGor = false;
         }
         if(navpicno || vodoravno || posevnoGor || posevnoDol){
           return znak;
@@ -97,6 +77,13 @@ class Igra{
       }
     }
     return " "; //izenačeno
+  }
+
+  poglej(x,y){
+    if(x >= 0 && x < this.w && y >= 0 && y < this.h){
+      return this.data[y][x];
+    }
+    return;
   }
 
   postavi(x,y){
