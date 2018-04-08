@@ -47,6 +47,8 @@ class Minimax{
             imin = k;
           }
         }
+
+        //če je na motezi nasprotnik išči min drugače pa max
         let index = novaIgra.naPotezi == this.znak ? imax : imin;
 
         moznost.zmaga = ovrednoteneMoznosti[index].zmaga;
@@ -86,6 +88,7 @@ class Igra{
   }
 
   prostaPolja(){
+    //vrni števolo prostih polj
     let st = 0;
     for(let j=0; j<this.h; j++){
       for(let i=0; i<this.w; i++){
@@ -96,6 +99,7 @@ class Igra{
   }
 
   moznosti(){
+    //vrni vse možne poteze, ki so trenutno na voljo
     let moznosti = [];
     for(let j=0; j<this.h; j++){
       for(let i=0; i<this.w; i++){
@@ -108,6 +112,7 @@ class Igra{
   }
 
   ovrednoti(){
+    //povej ali je kdo zmagal
     const n = 3; //koliko znakov mora biti v vrsti
     for(let j=0; j<this.h; j++){
       for(let i=0; i<this.w; i++){
@@ -159,6 +164,7 @@ class Igra{
   }
 
   copy(){
+    //naredi nov objetkt z enakimi podatki
     let igra = new Igra(this.w, this.h, this.naPotezi);
     igra.data = this.data.map(arr => arr.slice());
     return igra;
