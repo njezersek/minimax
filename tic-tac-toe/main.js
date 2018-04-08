@@ -83,7 +83,10 @@ class Igra{
   prikazi(){
     //prikazi stanje igre v konzoli
     //tole je ena čarovnija za seminarsko napiši na bolj jasen način
-    let tabela = this.data.map(vrstica => vrstica.join(" | ")).join("\n"+("-".repeat(this.w*4-3))+"\n");
+    let tabela = this.data.map(
+      vrstica => vrstica.join(" | ")
+    ).join("\n"+("-".repeat(this.w*4-3))+"\n");
+
     console.log(tabela);
   }
 
@@ -117,37 +120,43 @@ class Igra{
     for(let j=0; j<this.h; j++){
       for(let i=0; i<this.w; i++){
         let znak = this.data[j][i];
-        if(znak == " ")continue; //če si na preznem polju ne preverjaj kdo je zmagal
-        let zmagaVodoravno = true; //na začetku predvidevaš, da imas N v vrsto
-        let zmagaNavpicno = true;
-        let zmagaPosevnoGor = true;
-        let zmagaPosevnoDol = true;
+
+        //če si na preznem polju ne preverjaj kdo je zmagal
+        if(znak == " ")continue;
+
+        //na začetku predvidevaš, da imas N v vrsto
+        let vodoravno = true;
+        let navpicno = true;
+        let posevnoGor = true;
+        let posevnoDol = true;
         for(let k=1; k<n; k++){
           //preveri vodoravno
+          //če vrsta pade izven igralnega polja tukaj tudi ni zmage
           if(i+k < this.w && j < this.h){
-            if(this.data[j][i+k] != znak) zmagaVodoravno = false; //če je vmes kakšen nepravilen znak ni zmage
+            //če je vmes kakšen nepravilen znak ni zmage
+            if(this.data[j][i+k] != znak) vodoravno = false;
           }
-          else zmagaVodoravno = false;//če vrsta pade izven igralnega polja tukaj tudi ni zmage
+          else vodoravno = false;
 
           //preveri navpicno
           if(i < this.w && j+k < this.h){
-            if(this.data[j+k][i] != znak) zmagaNavpicno = false;
+            if(this.data[j+k][i] != znak) navpicno = false;
           }
-          else {zmagaNavpicno = false; }
+          else {navpicno = false; }
 
           //preveri posevno navzdol
           if(i+k < this.w && j+k < this.h){
-            if(this.data[j+k][i+k] != znak) zmagaPosevnoDol = false;
+            if(this.data[j+k][i+k] != znak) posevnoDol = false;
           }
-          else zmagaPosevnoDol = false;
+          else posevnoDol = false;
 
           //preveri posevno navzgor
           if(i-k < this.w && j+k < this.h){
-            if(this.data[j+k][i-k] != znak) zmagaPosevnoGor = false;
+            if(this.data[j+k][i-k] != znak) posevnoGor = false;
           }
-          else zmagaPosevnoGor = false;
+          else posevnoGor = false;
         }
-        if(zmagaNavpicno || zmagaVodoravno || zmagaPosevnoGor || zmagaPosevnoDol){
+        if(navpicno || vodoravno || posevnoGor || posevnoDol){
           return znak;
         }
       }
@@ -156,8 +165,11 @@ class Igra{
   }
 
   postavi(x,y){
-    if(this.data[y][x] != " ")return; //če ni prosto polje ne postavi
-    if(x < 0 || y < 0 || x >= this.w || y >= this.h)return; //če ni na igralni površini ne postavi
+    //če ni prosto polje ne postavi
+    if(this.data[y][x] != " ")return;
+    //če ni na igralni površini ne postavi
+    if(x < 0 || y < 0 || x >= this.w || y >= this.h)return;
+
     this.data[y][x] = this.naPotezi;
     if(this.naPotezi == "X")this.naPotezi = "O";
     else this.naPotezi = "X";
