@@ -1,0 +1,35 @@
+table {
+	border-collapse: collapse;
+  border-style: hidden;
+  table-layout:fixed;
+  margin: 0 auto;
+}
+
+td{
+  border: solid 20px black;
+  width: 100px;
+  height: 100px;
+  text-align: center;
+  padding: 10px;
+}
+
+td div{
+  background: white;
+  transition-property: background-size;
+  transition-duration: 0.3s;
+  background-position: center;
+  background-repeat: no-repeat;;
+  background-size: 0%;
+  width: 100%;
+  height: 100%;
+}
+
+td div.O{
+  background-image: url('media/O.png');
+  background-size: 100%;
+}
+
+td div.X{
+  background-image: url('media/X.png');
+  background-size: 100%;
+}

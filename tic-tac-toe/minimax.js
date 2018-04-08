@@ -1,11 +1,12 @@
 class Minimax{
   constructor(){
-    this.globina = 6; //pamet algoritma
+    this.globina = 9; //pamet algoritma
   }
 
   odlocitev(igra){
     	this.znak = igra.naPotezi;
       let moznosti = this.rekurzivnoDrevo(igra, this.globina);
+      console.log(moznosti);
       let vrednosti = moznosti.map(
         el => el.vrednost * (this.globina-el.oddaljenost)
       );

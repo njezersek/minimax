@@ -1,7 +1,8 @@
 class Igra{
-  constructor(w, h, zacne){
+  constructor(w, h, n, zacne){
     this.w = w;
     this.h = h;
+    this.vVrsto = n;
     this.naPotezi = zacne;
     this.data = [];
 
@@ -51,7 +52,7 @@ class Igra{
 
   ovrednoti(){
     //povej ali je kdo zmagal
-    const n = 3; //koliko znakov mora biti v vrsti
+    const n = this.vVrsto; //koliko znakov mora biti v vrsti
     for(let j=0; j<this.h; j++){
       for(let i=0; i<this.w; i++){
         let znak = this.poglej(i,j);
@@ -99,7 +100,7 @@ class Igra{
 
   copy(){
     //naredi nov objetkt z enakimi podatki
-    let igra = new Igra(this.w, this.h, this.naPotezi);
+    let igra = new Igra(this.w, this.h, this.vVrsto, this.naPotezi);
     igra.data = this.data.map(arr => arr.slice());
     return igra;
   }
