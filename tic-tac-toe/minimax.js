@@ -5,7 +5,11 @@ class Minimax{
 
   odlocitev(igra){
     	this.znak = igra.naPotezi;
-      return this.rekurzivnoDrevo(igra, this.globina);
+      let moznosti = this.rekurzivnoDrevo(igra, this.globina);
+      let vrednosti = moznosti.map(
+        el => el.vrednost * (this.globina-el.oddaljenost)
+      );
+      return moznosti[vrednosti.indexOf(Math.max(...vrednosti))];
   }
 
   //rekurzivna funkcije, ki vrne seznam možnih potez in jih ovrednoti
