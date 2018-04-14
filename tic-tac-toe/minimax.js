@@ -48,11 +48,8 @@ class Minimax{
         let index = novaIgra.naPotezi == this.znak ? imax : imin;
 
         moznost.zmaga = ovrednoteneMoznosti[index].zmaga;
+        moznost.vrednost = ovrednoteneMoznosti[index].vrednost;
         moznost.oddaljenost = ovrednoteneMoznosti[index].oddaljenost;
-
-        if(moznost.zmaga == this.znak)moznost.vrednost = 1;
-        else if(moznost.zmaga == " ")moznost.vrednost = 0;
-        else moznost.vrednost = -1;
       }
     }
     return moznosti;
