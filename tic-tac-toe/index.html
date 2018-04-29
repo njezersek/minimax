@@ -7,12 +7,18 @@
   <link rel="stylesheet" href="style.css">
   <title>tic-tac-toe</title>
 </head>
-<body>
-  <div id="display"></div>
-  <script src="igra.js"></script>
-  <script src="minimax.js"></script>
-  <script src="moznost.js"></script>
-  <script src="ui.js"></script>
-  <script src="main.js"></script>
+<body onload="setup()">
+  <div class="container">
+    <div class="header">
+      <h1>Križec-Krožec</h1>
+      <img src="media/settings.png" width="32">
+    </div>
+    <div id="display"></div>
+    <script src="igra.js"></script>
+    <script src="minimax.js"></script>
+    <script src="moznost.js"></script>
+    <script src="ui.js"></script>
+    <script src="main.js"></script>
+  </div>
 </body>
 </html>

@@ -89,13 +89,15 @@ class Igra{
 
   postavi(x,y){
     //če ni prosto polje ne postavi
-    if(this.data[y][x] != " ")return;
+    if(this.data[y][x] != " ")return false;
     //če ni na igralni površini ne postavi
-    if(x < 0 || y < 0 || x >= this.w || y >= this.h)return;
+    if(x < 0 || y < 0 || x >= this.w || y >= this.h)return false;
 
     this.data[y][x] = this.naPotezi;
     if(this.naPotezi == "X")this.naPotezi = "O";
     else this.naPotezi = "X";
+
+    return true;
   }
 
   copy(){
