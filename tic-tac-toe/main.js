@@ -7,6 +7,7 @@ let globina1 = 6;
 let globina2 = 6;
 let zacne = 1;
 let zamenjaniSimboli = false;
+let zakasnitev = 100;
 
 function setup(){
   algoritem1 = new Minimax(globina1);
@@ -44,7 +45,7 @@ function postaviIgalec1(){
     igra.postavi(odlocitev.x,odlocitev.y);
     ui.posodobi();
 
-    setTimeout(krog, 100);
+    setTimeout(krog, zakasnitev);
   }
 }
 
@@ -55,7 +56,7 @@ function postaviIgalec2(){
     igra.postavi(odlocitev.x,odlocitev.y);
     ui.posodobi();
 
-    setTimeout(krog, 100);
+    setTimeout(krog, zakasnitev);
   }
 }
 
@@ -67,18 +68,7 @@ function postavi(x,y){
   ui.posodobi();
   igra.prikazi();
 
-  setTimeout(krog, 200);
-}
-
-function postviRacunalnik(){
-  if(konec)return;
-  let odlocitev = algoritem1.odlocitev(igra);
-  igra.postavi(odlocitev.x,odlocitev.y);
-  ui.posodobi();
-  igra.prikazi();
-
-  onemogoceno = false;
-  preveriZmago();
+  setTimeout(krog, zakasnitev);
 }
 
 function preveriZmago(){
@@ -120,6 +110,9 @@ function settings(){
   document.getElementById('igralec1-globina-vrednost').innerHTML = globina1;
   document.getElementById('igralec2-globina').value = globina2;
   document.getElementById('igralec2-globina-vrednost').innerHTML = globina2;
+
+  document.getElementById('zakasnitev').value = zakasnitev;
+  document.getElementById('zakasnitev-vrednost').innerHTML = zakasnitev;
 
   if(zamenjaniSimboli){
     document.getElementById('simbol-container').style.flexDirection = "row-reverse";
@@ -170,8 +163,13 @@ function nastaviNacin(igralec, nacin){
   settings();
 }
 
-function nastaviGlobino(igralec){
+function nastaviGlobino(){
   globina1 = document.getElementById('igralec1-globina').value;
   globina2 = document.getElementById('igralec2-globina').value;
+  settings();
+}
+
+function nastaviZakasnitev(){
+  zakasnitev = document.getElementById('zakasnitev').value;
   settings();
 }
