@@ -1,6 +1,6 @@
 class Minimax{
-  constructor(){
-    this.globina = 6; //pamet algoritma
+  constructor(globina){
+    this.globina = globina; //pamet algoritma
   }
 
   odlocitev(igra){

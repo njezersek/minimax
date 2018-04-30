@@ -1,10 +1,62 @@
 let racunalnik, igra, ui, onemogoceno, konec;
+let igralec1 = "clovek";
+let igralec2 = "algoritem";
+let simbol1 = "X";
+let simbol2 = "O";
+let globina1 = 6;
+let globina2 = 6;
+let zacne = 1;
+let zamenjaniSimboli = false;
+
 function setup(){
-  racunalnik = new Minimax();
-  igra = new Igra(3,3,3,"X");
+  algoritem1 = new Minimax(globina1);
+  algoritem2 = new Minimax(globina2);
+  let z;
+  if(zacne == 1 && !zamenjaniSimboli)z = "X";
+  else z = "O";
+  igra = new Igra(3,3,3,z);
   ui = new Ui(document.getElementById("display"), igra);
-  onemogoceno = false;
+
+  onemogoceno = true;
   konec = false;
+
+  krog();
+}
+
+function krog(){
+  preveriZmago();
+  if(konec)return;
+  let simbol = simbol1;
+  if(zamenjaniSimboli)simbol = simbol2;
+  if(igra.naPotezi == simbol){
+    postaviIgalec1();
+  }
+  else{
+    postaviIgalec2();
+  }
+}
+
+function postaviIgalec1(){
+
+  if(igralec1 == "clovek")onemogoceno = false;
+  else{
+    let odlocitev = algoritem1.odlocitev(igra);
+    igra.postavi(odlocitev.x,odlocitev.y);
+    ui.posodobi();
+
+    setTimeout(krog, 100);
+  }
+}
+
+function postaviIgalec2(){
+  if(igralec2 == "clovek")onemogoceno = false;
+  else{
+    let odlocitev = algoritem2.odlocitev(igra);
+    igra.postavi(odlocitev.x,odlocitev.y);
+    ui.posodobi();
+
+    setTimeout(krog, 100);
+  }
 }
 
 function postavi(x,y){
@@ -15,14 +67,12 @@ function postavi(x,y){
   ui.posodobi();
   igra.prikazi();
 
-  preveriZmago();
-
-  setTimeout(postviRacunalnik, 100);
+  setTimeout(krog, 200);
 }
 
 function postviRacunalnik(){
   if(konec)return;
-  let odlocitev = racunalnik.odlocitev(igra);
+  let odlocitev = algoritem1.odlocitev(igra);
   igra.postavi(odlocitev.x,odlocitev.y);
   ui.posodobi();
   igra.prikazi();
@@ -37,4 +87,91 @@ function preveriZmago(){
     ui.posodobi();
     konec = true;
   }
+}
+
+//nastavitve
+function settings(){
+  document.getElementById('game').style.display = "none";
+  document.getElementById('settings').style.display = "block";
+
+  if(igralec1 == "clovek"){
+    document.getElementById('igralec1-globina-container').style.display = "none";
+    document.getElementById('igralec1-nacin-clovek').className = "option selected";
+    document.getElementById('igralec1-nacin-algoritem').className = "option";
+  }
+  else{
+    document.getElementById('igralec1-globina-container').style.display = "block";
+    document.getElementById('igralec1-nacin-clovek').className = "option";
+    document.getElementById('igralec1-nacin-algoritem').className = "option selected";
+  }
+
+  if(igralec2 == "clovek"){
+    document.getElementById('igralec2-globina-container').style.display = "none";
+    document.getElementById('igralec2-nacin-clovek').className = "option selected";
+    document.getElementById('igralec2-nacin-algoritem').className = "option";
+  }
+  else{
+    document.getElementById('igralec2-globina-container').style.display = "block";
+    document.getElementById('igralec2-nacin-clovek').className = "option";
+    document.getElementById('igralec2-nacin-algoritem').className = "option selected";
+  }
+
+  document.getElementById('igralec1-globina').value = globina1;
+  document.getElementById('igralec1-globina-vrednost').innerHTML = globina1;
+  document.getElementById('igralec2-globina').value = globina2;
+  document.getElementById('igralec2-globina-vrednost').innerHTML = globina2;
+
+  if(zamenjaniSimboli){
+    document.getElementById('simbol-container').style.flexDirection = "row-reverse";
+  }
+  else{
+    document.getElementById('simbol-container').style.flexDirection = "row";
+  }
+
+  if(zacne == 1){
+    document.getElementById('zacne-igralec1').className = "option selected";
+    document.getElementById('zacne-igralec2').className = "option";
+  }
+  else{
+    document.getElementById('zacne-igralec1').className = "option";
+    document.getElementById('zacne-igralec2').className = "option selected";
+  }
+
+}
+
+function closeSettings(){
+  document.getElementById('game').style.display = "block";
+  document.getElementById('settings').style.display = "none";
+  setup();
+}
+
+function nastaviZacne(igralec){
+  zacne = igralec;
+  settings();
+}
+
+function zamenjajSimbole(){
+  if(zamenjaniSimboli){
+    zamenjaniSimboli = false;
+  }
+  else{
+    zamenjaniSimboli = true;
+  }
+  settings();
+}
+
+function nastaviNacin(igralec, nacin){
+  if(igralec == 1){
+    igralec1 = nacin;
+  }
+  else{
+    igralec2 = nacin;
+  }
+  settings();
+}
+
+function nastaviGlobino(igralec){
+  globina1 = document.getElementById('igralec1-globina').value;
+  globina2 = document.getElementById('igralec2-globina').value;
+  settings();
 }

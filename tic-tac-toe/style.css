@@ -15,14 +15,14 @@ body{
 }
 
 
-table {
+.game table {
 	border-collapse: collapse;
   border-style: hidden;
   table-layout:fixed;
   margin: 0 auto;
 }
 
-td{
+.game td{
   border: solid 10px black;
   width: 100px;
   height: 100px;
@@ -30,7 +30,7 @@ td{
   padding: 30px;
 }
 
-td div{
+.game td div{
   background: white;
   transition-property: background-size;
   transition-duration: 0.1s;
@@ -41,12 +41,12 @@ td div{
   height: 100%;
 }
 
-td div.O{
+.game td div.O{
   background-image: url('media/O.png');
   background-size: 100%;
 }
 
-td div.X{
+.game td div.X{
   background-image: url('media/X.png');
   background-size: 100%;
 }
@@ -57,7 +57,7 @@ td div.X{
 	padding: 20px 0;
 }
 
-.button{
+.game .button{
 	padding: 10px;
 	background: #eee;
 	font-size: 20px;
@@ -67,11 +67,186 @@ td div.X{
 	border-radius: 3px;
 }
 
+.settings-button, .close-button{
+	cursor: pointer;
+}
+
+.settings table{
+	border-collapse: collapse;
+  //border-style: hidden;
+  table-layout:fixed;
+  margin: 0 auto;
+	width: 100%;
+}
+
+.settings td{
+	//border: 1px solid black;
+	padding: 10px;
+}
+
+.settings h3{
+	margin: 0;
+}
+
+.settings .select{
+	display: flex;
+	justify-content: space-between;
+	border-radius: 3px;
+	border: 1px solid black;
+	overflow: hidden;
+}
+
+.settings .select .option{
+	background-color: #eee;
+	width: 100%;
+	padding: 10px;
+	text-align: center;
+	transition-property: background-color;
+	transition-duration: 0.3s;
+	cursor: pointer;
+}
+
+.settings .select .option:hover{
+	background-color: #fff;
+}
+
+.settings .select .option.selected{
+	background-color: #000;
+	color: #fff;
+}
+
+.settings .simbol-container{
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.settings .button{
+	padding: 10px;
+	background: #eee;
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 3px;
+}
+
+.settings .br{
+	padding: 10px 0 0px;
+}
+
+.slider-container{
+	display: flex;
+	align-items: baseline;
+}
+
+.slider-container .vrednost{
+	font-size: 30px;
+	padding: 0 20px;
+}
+
+
+/* media query */
 @media only screen and (max-width: 600px) {
-	td{
-		border: solid 6px black;
-		width: 60px;
-		height: 60px;
-		padding: 20px;
+	body{
+		margin: 5px;
 	}
+
+	h1{
+		margin: 0px;
+	}
+	.game td{
+		border: solid 5px black;
+		width: 50px;
+		height: 50px;
+		padding: 15px;
+	}
+}
+
+/* slider */
+input[type=range] {
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 100%;
+}
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 12.8px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  background: #eee;
+  border-radius: 25px;
+  border: 0px solid #000101;
+}
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 20px;
+  width: 39px;
+  border-radius: 7px;
+  background: #000;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -3.6px;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #eee;
+}
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 12.8px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  background: #eee;
+  border-radius: 25px;
+  border: 0px solid #000101;
+}
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 20px;
+  width: 39px;
+  border-radius: 7px;
+  background: #000;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  width: 100%;
+  height: 12.8px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  border-color: transparent;
+  border-width: 39px 0;
+  color: transparent;
+}
+input[type=range]::-ms-fill-lower {
+  background: #eee;
+  border: 0px solid #000101;
+  border-radius: 50px;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+input[type=range]::-ms-fill-upper {
+  background: #eee;
+  border: 0px solid #000101;
+  border-radius: 50px;
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+input[type=range]::-ms-thumb {
+  box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+  border: 0px solid #000000;
+  height: 20px;
+  width: 39px;
+  border-radius: 7px;
+  background: #000;
+  cursor: pointer;
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #eee;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #eee;
 }
