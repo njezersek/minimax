@@ -1,15 +1,22 @@
 class Minimax{
   constructor(globina){
     this.globina = globina; //pamet algoritma
+    this.nakljucnaIzbira = true; //ali naj algoritem izbere naključno med večimi
+                                //enakkovrednimi izbirami
   }
 
   odlocitev(igra){
     	this.znak = igra.naPotezi;
       let moznosti = this.rekurzivnoDrevo(igra, this.globina);
-      console.log(moznosti);
+      //console.log(moznosti);
       let vrednosti = moznosti.map(
-        el => el.vrednost * (this.globina-el.oddaljenost)
+        // preprosto => vrednost (+/-) * bližina (bližje->večja vrednost)
+        el => 10 * el.vrednost * (this.globina-el.oddaljenost)
+              + Math.floor(Math.random()*10*this.nakljucnaIzbira)
+               //na konec dodana stevka, ki zagotovi naključno izbiro poteze
       );
+
+      console.log(vrednosti);
       return moznosti[vrednosti.indexOf(Math.max(...vrednosti))];
   }
 
