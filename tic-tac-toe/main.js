@@ -21,6 +21,15 @@ function setup(){
   onemogoceno = true;
   konec = false;
 
+  //// DEBUG:
+  /*igra.data = [
+    ["O","X"," "],
+    [" ","O"," "],
+    [" "," "," "],
+  ]*/
+
+  //algoritem2.odlocitev2(igra, 4)
+
   krog();
 }
 
@@ -29,6 +38,7 @@ function krog(){
   if(konec)return;
   let simbol = simbol1;
   if(zamenjaniSimboli)simbol = simbol2;
+  
   if(igra.naPotezi == simbol){
     postaviIgalec1();
   }
