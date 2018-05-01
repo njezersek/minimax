@@ -8,7 +8,7 @@ class Minimax{
   odlocitev(igra){
     	this.znak = igra.naPotezi;
       let moznosti = this.rekurzivnoDrevo(igra, this.globina);
-      //console.log(moznosti);
+      console.log(moznosti);
       let vrednosti = moznosti.map(
         // preprosto => vrednost (+/-) * bližina (bližje->večja vrednost)
         el => 10 * el.vrednost * (this.globina-el.oddaljenost)
