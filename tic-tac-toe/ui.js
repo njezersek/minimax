@@ -31,7 +31,7 @@ class Ui{
     console.warn("resrt");
   }
 
-  posodobi(){
+  posodobi(onemogoceno){
     let sporocilo = "";
     let disabledClass = "";
     if(igra.koncana){
@@ -55,6 +55,11 @@ class Ui{
         let bgimg = "url('media/"+igra.naPotezi+"-light.png')";
         if(disabledClass != "")bgimg = "";
         if(igra.poglej(i,j) != " ")bgimg = "";
+        if(onemogoceno)bgimg = "";
+
+        if(bgimg != "" && this.igra.data[j][i] == " "){
+          document.getElementById("c"+i+"x"+j).className = "enabled";
+        }
         document.getElementById("c"+i+"x"+j).style.backgroundImage = bgimg;
       }
     }

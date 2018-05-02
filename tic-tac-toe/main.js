@@ -33,7 +33,7 @@ function krog(){
     if(zmaga == "X")stevecZmagX++;
     if(zmaga == "O")stevecZmagO++;
     if(zmaga == " ")stevecIzenaceno++;
-    ui.posodobi();
+    ui.posodobi(onemogoceno);
     return;
   }
 
@@ -49,22 +49,28 @@ function krog(){
 
 function postaviIgalec1(){
 
-  if(igralec1 == "clovek")onemogoceno = false;
+  if(igralec1 == "clovek"){
+    onemogoceno = false;
+    ui.posodobi(onemogoceno);
+  }
   else{
     let odlocitev = algoritem1.odlocitev(igra);
     igra.postavi(odlocitev.x,odlocitev.y);
-    ui.posodobi();
+    ui.posodobi(onemogoceno);
 
     setTimeout(krog, zakasnitev);
   }
 }
 
 function postaviIgalec2(){
-  if(igralec2 == "clovek")onemogoceno = false;
+  if(igralec2 == "clovek"){
+    onemogoceno = false;
+    ui.posodobi(onemogoceno);
+  }
   else{
     let odlocitev = algoritem2.odlocitev(igra);
     igra.postavi(odlocitev.x,odlocitev.y);
-    ui.posodobi();
+    ui.posodobi(onemogoceno);
 
     setTimeout(krog, zakasnitev);
   }
@@ -75,7 +81,7 @@ function postavi(x,y){
   if(!igra.postavi(x,y))return;
 
   onemogoceno = true;
-  ui.posodobi();
+  ui.posodobi(onemogoceno);
   igra.prikazi();
 
   setTimeout(krog, zakasnitev);
