@@ -7,10 +7,10 @@ class Minimax{
 
   odlocitev(igra){
     this.znak = igra.naPotezi;
-    return this.rekurzija(igra, this.globina);
+    return this.rekurzivnoDrevo(igra, this.globina);
   }
 
-  rekurzija(igra, n){
+  rekurzivnoDrevo(igra, n){
     let moznosti = igra.moznosti();
 
     if(n > 0){
@@ -32,8 +32,8 @@ class Minimax{
         //če ni nihče zmagal in nisi še presegel globine
         //in je še kakšno prosto polje, lahko se zgodi da so vsa polja polna in
         //je rezultat izenačeno potem pride error
-        if(zmaga == " " && n-1>0 && novaIgra.prostaPolja() > 0){
-          let ovrednotenaMoznost = this.rekurzija(novaIgra, n-1);
+        if(zmaga == " " && novaIgra.prostaPolja() > 0){
+          let ovrednotenaMoznost = this.rekurzivnoDrevo(novaIgra, n-1);
 
           moznost.zmaga = ovrednotenaMoznost.zmaga;
           moznost.vrednost = ovrednotenaMoznost.vrednost;
