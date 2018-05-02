@@ -82,7 +82,7 @@ function postavi(x,y){
 
   onemogoceno = true;
   ui.posodobi(onemogoceno);
-  igra.prikazi();
+  //igra.prikazi();
 
   setTimeout(krog, zakasnitev);
 }

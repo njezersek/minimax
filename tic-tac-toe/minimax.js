@@ -42,7 +42,7 @@ class Minimax{
       }
     }
 
-    if(n == this.globina)console.log(moznosti);
+    //if(n == this.globina)console.log(moznosti);
 
     //izberi moznosti
     let vrednosti = moznosti.map(

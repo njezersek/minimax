@@ -27,8 +27,6 @@ class Ui{
     //resize
     window.addEventListener("resize", this.resize);
     this.resize();
-
-    console.warn("resrt");
   }
 
   posodobi(onemogoceno){
