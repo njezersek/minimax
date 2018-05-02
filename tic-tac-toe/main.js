@@ -1,4 +1,4 @@
-let racunalnik, igra, ui, onemogoceno, konec;
+let racunalnik, igra, ui, onemogoceno;
 let igralec1 = "clovek";
 let igralec2 = "algoritem";
 let simbol1 = "X";
@@ -8,6 +8,9 @@ let globina2 = 6;
 let zacne = 1;
 let zamenjaniSimboli = false;
 let zakasnitev = 100;
+let stevecZmagO = 0;
+let stevecZmagX = 0;
+let stevecIzenaceno = 0;
 
 function setup(){
   algoritem1 = new Minimax(globina1);
@@ -19,26 +22,23 @@ function setup(){
   ui = new Ui(document.getElementById("display"), igra);
 
   onemogoceno = true;
-  konec = false;
-
-  //// DEBUG:
-  /*igra.data = [
-    ["O","X"," "],
-    [" ","O"," "],
-    [" "," "," "],
-  ]*/
-
-  //algoritem2.odlocitev2(igra, 4)
 
   krog();
 }
 
 function krog(){
-  preveriZmago();
-  if(konec)return;
+  if(igra.koncana){
+    //posodobi stevce
+    let zmaga = igra.zmagovalec;
+    if(zmaga == "X")stevecZmagX++;
+    if(zmaga == "O")stevecZmagO++;
+    if(zmaga == " ")stevecIzenaceno++;
+    ui.posodobi();
+    return;
+  }
+
   let simbol = simbol1;
   if(zamenjaniSimboli)simbol = simbol2;
-  
   if(igra.naPotezi == simbol){
     postaviIgalec1();
   }
@@ -71,7 +71,7 @@ function postaviIgalec2(){
 }
 
 function postavi(x,y){
-  if(onemogoceno ||konec)return;
+  if(onemogoceno || igra.koncana)return;
   if(!igra.postavi(x,y))return;
 
   onemogoceno = true;
@@ -81,12 +81,10 @@ function postavi(x,y){
   setTimeout(krog, zakasnitev);
 }
 
-function preveriZmago(){
-  let zmaga = igra.ovrednoti();
-  if(zmaga != " " || igra.prostaPolja() == 0){
-    ui.posodobi();
-    konec = true;
-  }
+function stevciReset(){
+  stevecZmagO = 0;
+  stevecZmagX = 0;
+  stevecIzenaceno = 0;
 }
 
 //nastavitve
@@ -145,6 +143,7 @@ function settings(){
 function closeSettings(){
   document.getElementById('game').style.display = "block";
   document.getElementById('settings').style.display = "none";
+  stevciReset();
   setup();
 }
 

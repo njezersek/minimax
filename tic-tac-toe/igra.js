@@ -5,6 +5,8 @@ class Igra{
     this.vVrsto = n;
     this.naPotezi = zacne;
     this.data = [];
+    this.koncana = false;
+    this.zmagovalec = " ";
 
     //napolni tabelo s " "
     for(let j=0; j<this.h; j++){
@@ -34,6 +36,7 @@ class Igra{
         if(this.data[j][i] == " ")st++;
       }
     }
+    if(st == 0)this.koncana = true;
     return st;
   }
 
@@ -73,6 +76,8 @@ class Igra{
           if(this.poglej(i-k, j+k) != znak) posevnoGor = false;
         }
         if(navpicno || vodoravno || posevnoGor || posevnoDol){
+          this.koncana = true;
+          this.zmagovalec = znak;
           return znak;
         }
       }
@@ -96,6 +101,10 @@ class Igra{
     this.data[y][x] = this.naPotezi;
     if(this.naPotezi == "X")this.naPotezi = "O";
     else this.naPotezi = "X";
+
+    //ovrednoti igro (nastavi koncana in zmagovalec)
+    this.ovrednoti();
+    this.prostaPolja();
 
     return true;
   }

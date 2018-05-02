@@ -11,12 +11,25 @@ body{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 20px;
 	padding: 10px;
 }
 
 .game .table-container{
 	padding: 10px;
+}
+
+.game .overlay{
+	position: absolute;
+	opacity: 0;
+	transition-property: opacity;
+	transition-duration: 1s;
+  background: rgba(255, 255, 255, 0.9);
+	width: 500px;
+	width: 500px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .game table {
@@ -32,6 +45,10 @@ body{
   height: 100px;
   text-align: center;
   padding: 30px;
+}
+
+.game table.disabled td{
+  border-color: #eee;
 }
 
 .game td div{
@@ -60,19 +77,36 @@ body{
 }
 
 .info{
-	font-size: 30px;
+	font-size: 60px;
 	text-align: center;
 	padding: 20px 0;
 }
 
 .game .button{
 	padding: 10px;
-	background: #eee;
+	background-color: #000;
+	color: #fff;
 	font-size: 20px;
 	margin: 20px auto 0;
 	display: inline-block;
 	cursor: pointer;
 	border-radius: 3px;
+	transition: background-color 0.3s;
+}
+
+.game .button:hover{
+	background-color: #333;
+}
+
+.game .stevci{
+	display: flex;
+	justify-content: space-between;
+	padding: 10px;
+	font-size: 40px;
+}
+
+.game .stevci label{
+	font-size: 20px;
 }
 
 .settings-button, .close-button{
@@ -158,6 +192,10 @@ body{
 		margin: 5px;
 	}
 
+	.info{
+		font-size: 50px;
+	}
+
 	h1{
 		margin: 0px;
 	}
@@ -175,6 +213,10 @@ body{
 		width: 50px;
 		height: 50px;
 		padding: 15px;
+	}
+
+	.info{
+		font-size: 40px;
 	}
 }
 
