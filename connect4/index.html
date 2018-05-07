@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <title>Križec-krožec</title>
+</head>
+<body onload="setup()">
+  <div class="container game" id="game">
+    <div class="header">
+      <h1>Križec-krožec</h1>
+      <img src="media/settings.png" width="32" onclick="Ui.settings()" class="settings-button">
+    </div>
+    <div id="display"></div>
+    <script src="igra.js"></script>
+    <script src="minimax.js"></script>
+    <script src="moznost.js"></script>
+    <script src="ui.js"></script>
+    <script src="main.js"></script>
+  </div>
+  <div class="container settings" id="settings" style="display: none">
+    <div class="header">
+      <h1>Križec-krožec</h1>
+      <img src="media/close.png" width="32" onclick="Ui.closeSettings()" class="close-button">
+    </div>
+    <div>
+      <table>
+        <tr>
+          <td><h3>Igralec 1<h3></td>
+          <td><h3>Igralec 2</h3></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="select">
+              <div id="igralec1-nacin-clovek" class="option" onclick="Ui.nastaviNacin(1, 'clovek')">Človek</div>
+              <div id="igralec1-nacin-algoritem" class="option" onclick="Ui.nastaviNacin(1, 'algoritem')">Algoritem</div>
+            </div>
+          </td>
+          <td>
+            <div class="select">
+              <div id="igralec2-nacin-clovek" class="option" onclick="Ui.nastaviNacin(2, 'clovek')">Človek</div>
+              <div id="igralec2-nacin-algoritem" class="option" onclick="Ui.nastaviNacin(2, 'algoritem')">Algoritem</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div id="igralec1-globina-container">
+              <label for="igralec1-globina">Težavnost (globina): </label>
+              <label for="igralec1-globina" id="igralec1-globina-vrednost">6</label>
+              <input id="igralec1-globina" type="range" min="0" max="9" step="1" onchange="Ui.nastaviGlobino()">
+            </div>
+          </td>
+          <td>
+            <div id="igralec2-globina-container">
+              <label for="igralec2-globina">Težavnost (globina): </label>
+              <label for="igralec2-globina" id="igralec2-globina-vrednost">6</label>
+              <input id="igralec2-globina" type="range" min="0" max="9" step="1" onchange="Ui.nastaviGlobino()">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <label>Simbol igralca:</label><br><div class="br"></div>
+            <div class="simbol-container" id="simbol-container">
+              <img src="media/X.png" alt="X">
+              <div class="button" onclick="Ui.zamenjajSimbole()">Zamenjaj</div>
+              <img src="media/O.png" alt="O">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <label>Začne:</label><div class="br"></div>
+            <div class="select">
+              <div class="option selected" id="zacne-igralec1" onclick="Ui.nastaviZacne(1)">Igralec 1</div>
+              <div class="option" id="zacne-igralec2" onclick="Ui.nastaviZacne(2)">Igralec 2</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <div id="zakasnitev-container">
+              <label for="zakasnitev">Zakasnitev med potezami:</label>
+              <label for="zakasnitev" id="zakasnitev-vrednost">100</label>
+              <label for="zakasnitev"> ms</label>
+              <input id="zakasnitev" type="range" min="0" max="1000" step="50" onchange="Ui.nastaviZakasnitev()">
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+</body>
+</html>
