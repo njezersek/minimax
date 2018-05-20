@@ -3,7 +3,7 @@ class Moznost{
     this.x = x;
     this.y = y;
     this.zmaga = " ";
-    this.vrednost = -1;
+    this.vrednost = 0;
     this.oddaljenost = 0;
   }
 }

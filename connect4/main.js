@@ -18,7 +18,7 @@ function setup(){
   let z;
   if(zacne == 1 && !zamenjaniSimboli)z = "X";
   else z = "O";
-  igra = new Igra(3,3,3,z);
+  igra = new Igra(7,6,4,z);
   ui = new Ui(document.getElementById("display"), igra);
 
   onemogoceno = true;

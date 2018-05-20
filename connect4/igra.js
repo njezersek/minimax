@@ -43,10 +43,11 @@ class Igra{
   moznosti(){
     //vrni vse možne poteze, ki so trenutno na voljo
     let moznosti = [];
-    for(let j=0; j<this.h; j++){
-      for(let i=0; i<this.w; i++){
+    for(let i=0; i<this.w; i++){
+      for(let j=this.h-1; j>=0; j--){
         if(this.data[j][i] == " "){
           moznosti.push(new Moznost(i,j));
+          break;
         }
       }
     }
