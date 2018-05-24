@@ -13,16 +13,12 @@
       <h1>Štiri v vrsto</h1>
       <img src="media/settings.png" width="32" onclick="Ui.settings()" class="settings-button">
     </div>
-    <div id="display"></div>
-    <script src="igra.js"></script>
-    <script src="minimax.js"></script>
-    <script src="moznost.js"></script>
-    <script src="ui.js"></script>
-    <script src="main.js"></script>
+    <div id="display" class="canvas-container"></div>
+    <div class="footer"></div>
   </div>
   <div class="container settings" id="settings" style="display: none">
     <div class="header">
-      <h1>Križec-krožec</h1>
+      <h1>Štiri v vrsto</h1>
       <img src="media/close.png" width="32" onclick="Ui.closeSettings()" class="close-button">
     </div>
     <div>
@@ -94,5 +90,11 @@
     </div>
 
   </div>
+
+  <script src="igra.js"></script>
+  <script src="minimax.js"></script>
+  <script src="moznost.js"></script>
+  <script src="ui.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>

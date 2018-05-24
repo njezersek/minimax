@@ -110,6 +110,17 @@ class Igra{
     return true;
   }
 
+  postaviVStolpec(stolpec){
+    let moznosti = this.moznosti();
+    for(let i=0; i<moznosti.length; i++){
+      if(moznosti[i].x == stolpec){
+        this.postavi(moznosti[i].x, moznosti[i].y);
+        return true;
+      }
+    }
+    return false;
+  }
+
   copy(){
     //naredi nov objetkt z enakimi podatki
     let igra = new Igra(this.w, this.h, this.vVrsto, this.naPotezi);

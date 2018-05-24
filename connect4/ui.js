@@ -1,78 +1,128 @@
 class Ui{
-  constructor(el, igra){
-    this.parent = el;
+  constructor(container, igra){
     this.igra = igra;
 
-    let html = "";
-    html += "<div class='table-container'>";
-    html += "<div class='overlay' id='overlay' style='display: none'>";
-    html += "<div id='zmaga' class='info'></div>";
-    html += "</div>";
-    html += "<table id='table'>";
-    for(let j=0; j<this.igra.h; j++){
-      html += "<tr>";
-      for(let i=0; i<this.igra.w; i++){
-        html += "<td>";
-        html += "<div onclick='postavi("+i+","+j+")' id='c"+i+"x"+j+"' ></div>";
-        html += "</td>";
-      }
-      html += "</tr>";
-    }
-    html += "</table>";
-    html += "</div>";
-    html += "<div id='steveci' class='stevci'></div>";
-    this.parent.innerHTML = html;
-    this.posodobi();
+    this.size;
+    this.padding;
 
-    //resize
-    window.addEventListener("resize", this.resize);
-    this.resize();
+    this.selected = -1;
+
+    this.container = container;
+    this.canvas = document.createElement("canvas");
+    this.ctx = this.canvas.getContext("2d");
+
+    //pobrisi vsebino containerja
+    while (this.container.firstChild) {
+        this.container.removeChild(this.container.firstChild);
+    }
+
+    this.container.appendChild(this.canvas);
+
+    //add event listeners
+    window.addEventListener("resize", e=>this.resizeHandler(e));
+    this.canvas.addEventListener("mousedown", e=>this.onmousedownHandler(e));
+    this.canvas.addEventListener("mouseup", e=>this.onmouseupHandler(e));
+    window.addEventListener("mousemove", e=>this.onmousemoveHandler(e));
+
+    this.resizeHandler();
+
+    console.log("object created");
   }
 
-  posodobi(onemogoceno){
-    let sporocilo = "";
-    let disabledClass = "";
-    if(igra.koncana){
-      if(igra.zmagovalec == " ")sporocilo = "Izenačeno!"
-      else sporocilo = igra.zmagovalec + " zmaga!";
-      sporocilo += "<br><div onclick='setup()' class='button'>Nova igra</div>";
-      disabledClass = "disabled";
-      document.getElementById('overlay').style.display = "flex";
-      setTimeout(function(){
-        document.getElementById('overlay').style.opacity = "1";
-      }, 10);
-      document.getElementById('zmaga').innerHTML = sporocilo;
-    }
+  render(){
+    let w = this.canvas.width;
+    let h = this.canvas.height;
+    let rows = this.igra.h;
+    let columns = this.igra.w;
+    let size = this.size;
+    let padding = this.padding;
+    let igra = this.igra;
+    let selected = this.selected;
 
-    document.getElementById('steveci').innerHTML = "<div><label>X: </label>"+stevecZmagX+"</div><div><label>Izenačeno: </label>"+stevecIzenaceno+"</div><div><label>O: </label>"+stevecZmagO+"</div>";
+    this.ctx.clearRect(0,0,w,h); //pocisti
 
-    //izrisi mrezo
-    for(let j=0; j<this.igra.h; j++){
-      for(let i=0; i<this.igra.w; i++){
-        document.getElementById("c"+i+"x"+j).className = this.igra.data[j][i];
-        let bgimg = "url('media/"+igra.naPotezi+"-light.png')";
-        if(disabledClass != "")bgimg = "";
-        if(igra.poglej(i,j) != " ")bgimg = "";
-        if(onemogoceno)bgimg = "";
+    this.ctx.fillStyle = "#24a";
+    this.ctx.fillRect(0,0,columns*size, rows*size); // igralna polosca
 
-        if(bgimg != "" && this.igra.data[j][i] == " "){
-          document.getElementById("c"+i+"x"+j).className = "enabled";
+    for(var x=0; x<columns; x++){
+      for(var y=0; y<rows; y++){
+        this.ctx.beginPath();
+        this.ctx.arc(x*size+size/2, y*size+size/2, size/2-padding/2, 0, 2 * Math.PI, false); // polja
+
+        if(igra.poglej(x,y) == " "){
+          this.ctx.fillStyle = '#fff';
         }
-        document.getElementById("c"+i+"x"+j).style.backgroundImage = bgimg;
+        else if(igra.poglej(x,y) == "X"){
+          this.ctx.fillStyle = '#f00';
+        }
+        else if(igra.poglej(x,y) == "O"){
+          this.ctx.fillStyle = '#ff0';
+        }
+        this.ctx.fill();
+        this.ctx.lineWidth = padding/3;
+        this.ctx.strokeStyle = '#139';
+        this.ctx.stroke();
       }
     }
 
+    if(selected > -1 && onemogoceno == false){
+      this.ctx.fillStyle = "rgba(0, 0, 55, 0.5)";
+      this.ctx.fillRect(selected*size,0,size, rows*size); //izbran stolpec
+    }
   }
 
-  resize(){
-    let table = document.getElementById('table');
-    let overlay = document.getElementById('overlay');
-    let w = table.offsetWidth;
-    let h = table.offsetHeight;
-    overlay.style.width = w+"px";
-    overlay.style.height = h+"px"
+  resizeHandler(e){
+    this.canvas.height = this.container.offsetHeight;
+    this.canvas.width = this.container.offsetWidth;
 
-    overlay.style.marginLeft = window.getComputedStyle(table)["margin-left"];
+    if(this.canvas.height*this.igra.w < this.canvas.width*this.igra.h){
+      this.size = this.canvas.height/this.igra.h;
+    }
+    else{
+      this.size = this.canvas.width/this.igra.w;
+    }
+    this.padding = this.size / 5;
+
+    this.canvas.height = this.igra.h*this.size;
+    this.canvas.width = this.igra.w*this.size;
+
+    this.render();
+  }
+
+  onmousedownHandler(e){
+    var viewportOffset = this.canvas.getBoundingClientRect();
+    var top = viewportOffset.top;
+    var left = viewportOffset.left;
+    this.onmousedown(e.clientX-left, e.clientY-top);
+  }
+
+  onmouseupHandler(e){
+    var viewportOffset = this.canvas.getBoundingClientRect();
+    var top = viewportOffset.top;
+    var left = viewportOffset.left;
+    this.onmouseup(e.clientX-left, e.clientY-top);
+  }
+
+  onmousemoveHandler(e){
+    var viewportOffset = this.canvas.getBoundingClientRect();
+    var top = viewportOffset.top;
+    var left = viewportOffset.left;
+    this.onmousemove(e.clientX-left, e.clientY-top);
+  }
+
+  onmousedown(x,y){
+
+  }
+
+  onmouseup(x,y){
+    if(this.selected<0 || this.selected>this.igra.w)return;
+    postavi(this.selected);
+  }
+
+  onmousemove(x,y){
+    this.selected = Math.floor(x/this.size);
+    if(x<0 || x>this.canvas.width || y<0 || y>this.canvas.height)this.selected=-1;
+    this.render();
   }
 
   //nastavitve
@@ -129,7 +179,7 @@ class Ui{
   }
 
   static closeSettings(){
-    document.getElementById('game').style.display = "block";
+    document.getElementById('game').style.display = "flex";
     document.getElementById('settings').style.display = "none";
     stevciReset();
     setup();
