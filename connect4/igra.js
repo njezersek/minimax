@@ -121,6 +121,16 @@ class Igra{
     return false;
   }
 
+  visinaStolpca(stolpec){
+    let moznosti = this.moznosti();
+    for(let i=0; i<moznosti.length; i++){
+      if(moznosti[i].x == stolpec){
+        return moznosti[i].y;
+      }
+    }
+    return -1;
+  }
+
   copy(){
     //naredi nov objetkt z enakimi podatki
     let igra = new Igra(this.w, this.h, this.vVrsto, this.naPotezi);

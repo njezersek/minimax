@@ -59,6 +59,7 @@ function postaviIgalec1(){
   else{
     let odlocitev = algoritem1.odlocitev(igra);
     igra.postavi(odlocitev.x,odlocitev.y);
+    //ui.spustZetona(odlocitev.x);
     ui.render();
 
     setTimeout(krog, zakasnitev);
@@ -73,6 +74,7 @@ function postaviIgalec2(){
   else{
     let odlocitev = algoritem2.odlocitev(igra);
     igra.postavi(odlocitev.x,odlocitev.y);
+    //ui.spustZetona(odlocitev.x);
     ui.render();
 
     setTimeout(krog, zakasnitev);
