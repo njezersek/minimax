@@ -1,12 +1,14 @@
 class Ui{
   constructor(container, igra){
     this.igra = igra;
+    this.igraAnimaicja = igra.copy();
     this.animiraniZetoni = [];
 
     this.size;
     this.padding;
 
     this.selected = -1;
+    this.onemogoceno = true;
 
     this.container = container;
     this.canvas = document.createElement("canvas");
@@ -39,20 +41,9 @@ class Ui{
     let padding = this.padding;
     let igra = this.igra;
     let selected = this.selected;
+    let onemogoceno = this.onemogoceno;
 
     this.ctx.clearRect(0,0,w,h); //pocisti
-
-    // ozadje
-    this.ctx.fillStyle = "#24a";
-    this.ctx.fillRect(0,0,columns*size, rows*size);
-    for(var x=0; x<columns; x++){
-      for(var y=0; y<rows; y++){
-        this.ctx.beginPath();
-        this.ctx.arc(x*size+size/2, y*size+size/2, size/2-padding/2, 0, 2 * Math.PI, false);
-        this.ctx.fillStyle = '#fff';
-        this.ctx.fill();
-      }
-    }
 
     //animirani zetoni
     for(let i=0; i<this.animiraniZetoni.length; i++){
@@ -74,8 +65,8 @@ class Ui{
         //mreza
         this.ctx.fillStyle = "#24a";
         this.ctx.beginPath();
-        this.ctx.arc(x*size+size/2, y*size+size/2, size/2-padding/2, 0, 2 * Math.PI, false);
-        this.ctx.rect(x*size+size, y*size, -size, size);
+        this.ctx.arc(Math.round(x*size+size/2), Math.round(y*size+size/2), Math.round(size/2-padding/2), 0, 2 * Math.PI, false);
+        this.ctx.rect(Math.ceil(x*size+size), Math.floor(y*size), Math.floor(-size), Math.ceil(size));
         this.ctx.fill();
 
         //zeton
@@ -96,7 +87,7 @@ class Ui{
     }
 
     //izbran stolpec
-    if(selected > -1 && onemogoceno == false){
+    if(selected > -1 && !onemogoceno && !this.igraAnimaicja.koncana && this.igraAnimaicja.visinaStolpca(selected)>=0){
       this.ctx.fillStyle = "rgba(0, 0, 55, 0.5)";
       this.ctx.fillRect(selected*size,0,size, rows*size);
     }
@@ -145,11 +136,12 @@ class Ui{
 
   }
 
-  onmouseup(x,y){
-    if(onemogoceno || this.igra.koncana)return;
+  onmouseup(xMouse,yMouse){
+    if(this.onemogoceno)return;
     if(this.selected<0 || this.selected>this.igra.w)return;
-    this.spustZetona(this.selected);
-    //postavi(this.selected);
+    let x = this.selected;
+    let y = this.igraAnimaicja.visinaStolpca(x);
+    postavi(x,y)
   }
 
   onmousemove(x,y){
@@ -158,24 +150,28 @@ class Ui{
     this.render();
   }
 
-  spustZetona(stolpec){
+  spustZetona(x,y){
     let zeton = {
-      x: stolpec,
+      x: x,
       y: -1,
+      xDest: x,
+      yDest: y,
       hitrost: 0,
-      igralec: this.igra.naPotezi
+      igralec: this.igraAnimaicja.naPotezi
     }
+    //če ne moreš postaviti žetone ne predvajal animacije
+    if(!this.igraAnimaicja.postavi(x,y))return false;
     this.animiraniZetoni.push(zeton);
+    return true;
   }
 
   update(){
     for(let i=0; i<this.animiraniZetoni.length; i++){
-      this.animiraniZetoni[i].hitrost += 0.01;
-      this.animiraniZetoni[i].y += this.animiraniZetoni[i].hitrost;
-
-      if(this.animiraniZetoni[i].y > this.igra.visinaStolpca(this.animiraniZetoni[i].x)){
-        this.animiraniZetoni[i].y = this.igra.h-1;
-        postavi(this.animiraniZetoni[i].x);
+      let zeton = this.animiraniZetoni[i];
+      zeton.hitrost += 0.01;
+      zeton.y += zeton.hitrost;
+      if(zeton.y > zeton.yDest){
+        igra.postavi(zeton.xDest, zeton.yDest);
         this.animiraniZetoni.splice(i,1);
         i--;
       }

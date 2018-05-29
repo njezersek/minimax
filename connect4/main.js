@@ -1,4 +1,4 @@
-let racunalnik, igra, ui, onemogoceno;
+let racunalnik, igra, ui;
 let igralec1 = "clovek";
 let igralec2 = "algoritem";
 let simbol1 = "X";
@@ -21,8 +21,6 @@ function setup(){
   igra = new Igra(7,6,4,z);
   ui = new Ui(document.getElementById("display"), igra);
 
-  onemogoceno = true;
-
   krog();
 }
 
@@ -42,7 +40,6 @@ function krog(){
   if(igra.naPotezi == simbol){
     console.log("Igralec 1");
     postaviIgalec1();
-
   }
   else{
     console.log("Igralec 2");
@@ -51,45 +48,41 @@ function krog(){
 }
 
 function postaviIgalec1(){
-
   if(igralec1 == "clovek"){
-    onemogoceno = false;
+    ui.onemogoceno = false;
     ui.render();
   }
   else{
     let odlocitev = algoritem1.odlocitev(igra);
-    igra.postavi(odlocitev.x,odlocitev.y);
-    //ui.spustZetona(odlocitev.x);
+    ui.spustZetona(odlocitev.x,odlocitev.y);
     ui.render();
 
-    setTimeout(krog, zakasnitev);
+    //setTimeout(krog, zakasnitev);
   }
 }
 
 function postaviIgalec2(){
   if(igralec2 == "clovek"){
-    onemogoceno = false;
+    ui.onemogoceno = false;
     ui.render();
   }
   else{
     let odlocitev = algoritem2.odlocitev(igra);
-    igra.postavi(odlocitev.x,odlocitev.y);
-    //ui.spustZetona(odlocitev.x);
+    ui.spustZetona(odlocitev.x, odlocitev.y);
     ui.render();
 
-    setTimeout(krog, zakasnitev);
+    //setTimeout(krog, zakasnitev);
   }
 }
 
 function postavi(stolpec){
-  if(onemogoceno || igra.koncana)return;
-  if(!igra.postaviVStolpec(stolpec))return;
+  if(!ui.spustZetona(stolpec, igra.visinaStolpca(stolpec)))return;
 
-  onemogoceno = true;
+  ui.onemogoceno = true;
   ui.render();
   //igra.prikazi();
 
-  setTimeout(krog, zakasnitev);
+  //setTimeout(krog, zakasnitev);
 }
 
 function stevciReset(){

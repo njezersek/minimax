@@ -94,10 +94,12 @@ class Igra{
   }
 
   postavi(x,y){
-    //če ni prosto polje ne postavi
-    if(this.data[y][x] != " ")return false;
+    //če je igra končana ne postavi
+    if(this.koncana)return false;
     //če ni na igralni površini ne postavi
     if(x < 0 || y < 0 || x >= this.w || y >= this.h)return false;
+    //če ni prosto polje ne postavi
+    if(this.data[y][x] != " ")return false;
 
     this.data[y][x] = this.naPotezi;
     if(this.naPotezi == "X")this.naPotezi = "O";
