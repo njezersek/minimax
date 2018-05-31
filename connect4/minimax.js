@@ -42,7 +42,17 @@ class Minimax{
       }
     }
 
-    if(n == this.globina)console.log(moznosti);
+    if(n == this.globina){
+      let out1 = " * ";
+      let out2 = " * ";
+      for(let index=0; index<moznosti.length; index++){
+        out1 += moznosti[index].x+" * ";
+        out2 += moznosti[index].zmaga+" * ";
+      }
+      console.log(out1);
+      console.log(out2);
+
+    }
 
     //izberi moznosti
     let vrednosti = moznosti.map(

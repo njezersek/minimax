@@ -1,7 +1,7 @@
 class Ui{
   constructor(container, igra){
     this.igra = igra;
-    this.igraAnimaicja = igra.copy();
+    this.igraAnimacija = igra.copy();
     this.animiraniZetoni = [];
 
     this.size;
@@ -35,11 +35,11 @@ class Ui{
   render(){
     let w = this.canvas.width;
     let h = this.canvas.height;
-    let rows = this.igra.h;
-    let columns = this.igra.w;
+    let rows = this.igraAnimacija.h;
+    let columns = this.igraAnimacija.w;
     let size = this.size;
     let padding = this.padding;
-    let igra = this.igra;
+    let igra = this.igraAnimacija;
     let selected = this.selected;
     let onemogoceno = this.onemogoceno;
 
@@ -87,7 +87,7 @@ class Ui{
     }
 
     //izbran stolpec
-    if(selected > -1 && !onemogoceno && !this.igraAnimaicja.koncana && this.igraAnimaicja.visinaStolpca(selected)>=0){
+    if(selected > -1 && !onemogoceno && !this.igra.koncana && this.igra.visinaStolpca(selected)>=0){
       this.ctx.fillStyle = "rgba(0, 0, 55, 0.5)";
       this.ctx.fillRect(selected*size,0,size, rows*size);
     }
@@ -97,16 +97,16 @@ class Ui{
     this.canvas.height = this.container.offsetHeight;
     this.canvas.width = this.container.offsetWidth;
 
-    if(this.canvas.height*this.igra.w < this.canvas.width*this.igra.h){
-      this.size = this.canvas.height/this.igra.h;
+    if(this.canvas.height*this.igraAnimacija.w < this.canvas.width*this.igraAnimacija.h){
+      this.size = this.canvas.height/this.igraAnimacija.h;
     }
     else{
-      this.size = this.canvas.width/this.igra.w;
+      this.size = this.canvas.width/this.igraAnimacija.w;
     }
     this.padding = this.size / 5;
 
-    this.canvas.height = this.igra.h*this.size;
-    this.canvas.width = this.igra.w*this.size;
+    this.canvas.height = this.igraAnimacija.h*this.size;
+    this.canvas.width = this.igraAnimacija.w*this.size;
 
     this.render();
   }
@@ -137,11 +137,10 @@ class Ui{
   }
 
   onmouseup(xMouse,yMouse){
-    if(this.onemogoceno)return;
-    if(this.selected<0 || this.selected>this.igra.w)return;
+    //if(this.selected<0 || this.selected>this.igraAnimacija.w)return;
     let x = this.selected;
-    let y = this.igraAnimaicja.visinaStolpca(x);
-    postavi(x,y)
+    let y = this.igra.visinaStolpca(x);
+    this.postavi(x,y);
   }
 
   onmousemove(x,y){
@@ -157,10 +156,10 @@ class Ui{
       xDest: x,
       yDest: y,
       hitrost: 0,
-      igralec: this.igraAnimaicja.naPotezi
+      igralec: this.igra.naPotezi
     }
     //če ne moreš postaviti žetone ne predvajal animacije
-    if(!this.igraAnimaicja.postavi(x,y))return false;
+    if(!this.igra.postavi(x,y)){return false; consle.log(x,y)}
     this.animiraniZetoni.push(zeton);
     return true;
   }
@@ -171,15 +170,66 @@ class Ui{
       zeton.hitrost += 0.01;
       zeton.y += zeton.hitrost;
       if(zeton.y > zeton.yDest){
-        igra.postavi(zeton.xDest, zeton.yDest);
+        this.igraAnimacija.postavi(zeton.xDest, zeton.yDest);
         this.animiraniZetoni.splice(i,1);
         i--;
+
+        setTimeout(()=>this.krog(), zakasnitev);
       }
     }
 
     this.render();
 
     window.requestAnimationFrame(()=>this.update());
+  }
+
+  krog(){
+    if(this.igra.koncana){
+      //posodobi stevce
+      let zmaga = this.igra.zmagovalec;
+      if(zmaga == "X")stevecZmagX++;
+      if(zmaga == "O")stevecZmagO++;
+      if(zmaga == " ")stevecIzenaceno++;
+      this.render();
+      return;
+    }
+
+    let simbol = simbol1;
+    if(zamenjaniSimboli)simbol = simbol2;
+    if(this.igra.naPotezi == simbol){
+      //console.log("Igralec 1");
+      this.postaviIgalec1();
+    }
+    else{
+      //console.log("Igralec 2");
+      this.postaviIgalec2();
+    }
+  }
+
+  postaviIgalec1(){
+    let odlocitev = algoritem1.odlocitev(igra);
+    if(igralec1 == "clovek"){
+      this.onemogoceno = false;
+    }
+    else{
+      this.spustZetona(odlocitev.x,odlocitev.y);
+    }
+  }
+
+  postaviIgalec2(){
+    let odlocitev = algoritem2.odlocitev(igra);
+    if(igralec2 == "clovek"){
+      this.onemogoceno = false;
+    }
+    else{
+      this.spustZetona(odlocitev.x, odlocitev.y);
+    }
+  }
+
+  postavi(x,y){
+    if(this.onemogoceno)return;
+    if(!this.spustZetona(x,y))return;
+    this.onemogoceno = true;
   }
 
   //nastavitve

@@ -21,68 +21,7 @@ function setup(){
   igra = new Igra(7,6,4,z);
   ui = new Ui(document.getElementById("display"), igra);
 
-  krog();
-}
-
-function krog(){
-  if(igra.koncana){
-    //posodobi stevce
-    let zmaga = igra.zmagovalec;
-    if(zmaga == "X")stevecZmagX++;
-    if(zmaga == "O")stevecZmagO++;
-    if(zmaga == " ")stevecIzenaceno++;
-    ui.render();
-    return;
-  }
-
-  let simbol = simbol1;
-  if(zamenjaniSimboli)simbol = simbol2;
-  if(igra.naPotezi == simbol){
-    console.log("Igralec 1");
-    postaviIgalec1();
-  }
-  else{
-    console.log("Igralec 2");
-    postaviIgalec2();
-  }
-}
-
-function postaviIgalec1(){
-  if(igralec1 == "clovek"){
-    ui.onemogoceno = false;
-    ui.render();
-  }
-  else{
-    let odlocitev = algoritem1.odlocitev(igra);
-    ui.spustZetona(odlocitev.x,odlocitev.y);
-    ui.render();
-
-    //setTimeout(krog, zakasnitev);
-  }
-}
-
-function postaviIgalec2(){
-  if(igralec2 == "clovek"){
-    ui.onemogoceno = false;
-    ui.render();
-  }
-  else{
-    let odlocitev = algoritem2.odlocitev(igra);
-    ui.spustZetona(odlocitev.x, odlocitev.y);
-    ui.render();
-
-    //setTimeout(krog, zakasnitev);
-  }
-}
-
-function postavi(stolpec){
-  if(!ui.spustZetona(stolpec, igra.visinaStolpca(stolpec)))return;
-
-  ui.onemogoceno = true;
-  ui.render();
-  //igra.prikazi();
-
-  //setTimeout(krog, zakasnitev);
+  ui.krog();
 }
 
 function stevciReset(){
