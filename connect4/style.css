@@ -24,12 +24,27 @@ html, body{
 	justify-content: space-between;
 }
 
-.game .canvas-container{
+.game .main{
 	height: 100%;
 	padding: 0;
 	margin: 0;
 	overflow: hidden;
 	text-align: center;
+}
+
+.game .canvas-container{
+	height: 100%;
+	position: relative;
+}
+
+.game .canvas-container .winner-info{
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	background: rgba(255, 255, 255, 0.5);
+	font-size: 50px;
 }
 
 .game .table-container{

@@ -13,12 +13,16 @@ class Ui{
     this.container = container;
     this.canvas = document.createElement("canvas");
     this.ctx = this.canvas.getContext("2d");
+		this.winnerInfo = document.createElement("div");
 
     //pobrisi vsebino containerja
     while (this.container.firstChild) {
         this.container.removeChild(this.container.firstChild);
     }
 
+		this.winnerInfo.className = "winner-info";
+
+		this.container.appendChild(this.winnerInfo);
     this.container.appendChild(this.canvas);
 
     //add event listeners
@@ -93,6 +97,22 @@ class Ui{
     }
   }
 
+	renderUI(){
+		//izpisi kdo zmagal
+		if(this.igra.koncana){
+			let zmagovalec = "";
+			if(this.igra.zmagovalec == simbol1)zmagovalec = "rdeči";
+			else zmagovalec = "rumeni";
+
+			this.winnerInfo.innerHTML = '<div>Zmagovalec je '+zmagovalec+'!</div><div onclick="setup()" class="button">Nova igra</div>';
+			this.winnerInfo.style.display = "flex";
+		}
+		else{
+			this.winnerInfo.innerHTML = '';
+			this.winnerInfo.style.display = "none";
+		}
+	}
+
   resizeHandler(e){
     this.canvas.height = this.container.offsetHeight;
     this.canvas.width = this.container.offsetWidth;
@@ -107,6 +127,9 @@ class Ui{
 
     this.canvas.height = this.igraAnimacija.h*this.size;
     this.canvas.width = this.igraAnimacija.w*this.size;
+
+		this.winnerInfo.style.height = this.canvas.height+"px";
+		this.winnerInfo.style.width = this.canvas.width+"px";
 
     this.render();
   }
@@ -184,6 +207,7 @@ class Ui{
   }
 
   krog(){
+		this.renderUI();
     if(this.igra.koncana){
       //posodobi stevce
       let zmaga = this.igra.zmagovalec;
@@ -207,21 +231,21 @@ class Ui{
   }
 
   postaviIgalec1(){
-    let odlocitev = algoritem1.odlocitev(igra);
     if(igralec1 == "clovek"){
       this.onemogoceno = false;
     }
     else{
+			let odlocitev = algoritem1.odlocitev(igra);
       this.spustZetona(odlocitev.x,odlocitev.y);
     }
   }
 
   postaviIgalec2(){
-    let odlocitev = algoritem2.odlocitev(igra);
     if(igralec2 == "clovek"){
       this.onemogoceno = false;
     }
     else{
+			let odlocitev = algoritem2.odlocitev(igra);
       this.spustZetona(odlocitev.x, odlocitev.y);
     }
   }
