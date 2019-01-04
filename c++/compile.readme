@@ -1,0 +1,1 @@
+g++ Main.cpp Igra.cpp Igra.h Minimax.cpp Minimax.h Moznost.cpp Moznost.h -o minimax -O3

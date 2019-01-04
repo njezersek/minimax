@@ -2,7 +2,7 @@ let Igra = require("./igra.js");
 let Minimax = require("./minimax.js");
 
 const igra = new Igra(7,6,4,"X");
-const algoritem = new Minimax(5);
+const algoritem = new Minimax(8);
 
 igra.data =
 [ [ ' ', ' ', ' ', ' ', ' ', ' ', ' ' ],
