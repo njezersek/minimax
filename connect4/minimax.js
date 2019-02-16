@@ -1,7 +1,7 @@
 class Minimax{
   constructor(globina){
     this.globina = globina; //pamet algoritma
-    this.nakljucnaIzbira = false; //ali naj algoritem izbere naključno med večimi
+    this.nakljucnaIzbira = true; //ali naj algoritem izbere naključno med večimi
                                 //enakkovrednimi izbirami
   }
 
