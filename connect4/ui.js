@@ -54,10 +54,10 @@ class Ui{
       let zeton = this.animiraniZetoni[i];
       this.ctx.beginPath();
       this.ctx.arc(zeton.x*size+size/2, zeton.y*size+size/2, size/2-padding/2, 0, 2 * Math.PI, false); // polja
-      if(zeton.igralec == "X"){
+      if(zeton.igralec == 1){
         this.ctx.fillStyle = '#f00';
       }
-      else if(zeton.igralec == "O"){
+      else if(zeton.igralec == -1){
         this.ctx.fillStyle = '#ff0';
       }
       this.ctx.fill();
@@ -76,11 +76,11 @@ class Ui{
         //zeton
         this.ctx.beginPath();
         this.ctx.arc(x*size+size/2, y*size+size/2, size/2-padding/2, 0, 2 * Math.PI, false); // polja
-        if(igra.poglej(x,y) == "X"){
+        if(igra.poglej(x,y) == 1){
           this.ctx.fillStyle = '#f00';
           this.ctx.fill();
         }
-        else if(igra.poglej(x,y) == "O"){
+        else if(igra.poglej(x,y) == -1){
           this.ctx.fillStyle = '#ff0';
           this.ctx.fill();
         }
@@ -211,9 +211,9 @@ class Ui{
     if(this.igra.koncana){
       //posodobi stevce
       let zmaga = this.igra.zmagovalec;
-      if(zmaga == "X")stevecZmagX++;
-      if(zmaga == "O")stevecZmagO++;
-      if(zmaga == " ")stevecIzenaceno++;
+      if(zmaga == 1)stevecZmagX++;
+      if(zmaga == -1)stevecZmagO++;
+      if(zmaga == 0)stevecIzenaceno++;
       this.render();
       return;
     }

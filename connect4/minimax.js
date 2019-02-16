@@ -1,13 +1,15 @@
 class Minimax{
   constructor(globina){
     this.globina = globina; //pamet algoritma
-    this.nakljucnaIzbira = true; //ali naj algoritem izbere naključno med večimi
+    this.nakljucnaIzbira = false; //ali naj algoritem izbere naključno med večimi
                                 //enakkovrednimi izbirami
   }
 
   odlocitev(igra){
     this.znak = igra.naPotezi;
-    return this.rekurzivnoDrevo(igra, this.globina);
+		let odlocitev = this.rekurzivnoDrevo(igra, this.globina);
+		//console.log("odlocitev", odlocitev)
+    return odlocitev;
   }
 
   rekurzivnoDrevo(igra, n){
@@ -20,19 +22,18 @@ class Minimax{
         //ovrednoti moznost
         let novaIgra = igra.copy();
         novaIgra.postavi(moznost.x, moznost.y);
-        let zmaga = novaIgra.ovrednoti();
+        let vrednost = novaIgra.ovrednoti().vrednost;
+				let zmaga = novaIgra.ovrednoti().zmaga;
 
         //nastavi moznost
         moznost.oddaljenost = this.globina-n;
         moznost.zmaga = zmaga;
-        if(zmaga == this.znak)moznost.vrednost = 1;
-        else if(zmaga == " ")moznost.vrednost = 0;
-        else moznost.vrednost = -1;
+        moznost.vrednost = vrednost;
 
         //če ni nihče zmagal in nisi še presegel globine
         //in je še kakšno prosto polje, lahko se zgodi da so vsa polja polna in
         //je rezultat izenačeno potem pride error
-        if(zmaga == " " && novaIgra.prostaPolja() > 0){
+        if(zmaga == 0 && novaIgra.prostaPolja() > 0){
           let ovrednotenaMoznost = this.rekurzivnoDrevo(novaIgra, n-1);
 
           moznost.zmaga = ovrednotenaMoznost.zmaga;
@@ -42,12 +43,12 @@ class Minimax{
       }
     }
 
-    if(n == this.globina){
-      let out1 = " * ";
+  	if(n == this.globina){
+      let out1 = " | ";
       let out2 = " * ";
       for(let index=0; index<moznosti.length; index++){
-        out1 += moznosti[index].x+" * ";
-        out2 += moznosti[index].zmaga+" * ";
+        out1 += moznosti[index].x+" | ";
+        out2 += moznosti[index].vrednost+" * ";
       }
       console.log(out1);
       console.log(out2);
@@ -67,7 +68,7 @@ class Minimax{
     let imin = vrednosti.indexOf(Math.min(...vrednosti));
 
     //če je na motezi nasprotnik išči min drugače pa max
-    let index = igra.naPotezi == this.znak ? imax : imin;
+    let index = igra.naPotezi == 1 ? imax : imin;
 
     //console.log(moznosti);
     return moznosti[index];

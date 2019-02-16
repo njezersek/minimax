@@ -6,13 +6,13 @@ class Igra{
     this.naPotezi = zacne;
     this.data = [];
     this.koncana = false;
-    this.zmagovalec = " ";
+    this.zmagovalec = 0;
 
-    //napolni tabelo s " "
+    //napolni tabelo s 0
     for(let j=0; j<this.h; j++){
       let vrstica = [];
       for(let i=0; i<this.w; i++){
-        vrstica.push(" ");
+        vrstica.push(0);
       }
       this.data.push(vrstica);
     }
@@ -22,7 +22,7 @@ class Igra{
     //prikazi stanje igre v konzoli
     //tole je ena čarovnija za seminarsko napiši na bolj jasen način
     let tabela = this.data.map(
-      vrstica => vrstica.join(" | ")
+      vrstica => vrstica.map(polje => polje == 1 ? "X" : polje == -1 ? "O" : " ").join(" | ")
     ).join("\n"+("-".repeat(this.w*4-3))+"\n");
 
     console.log(tabela);
@@ -33,7 +33,7 @@ class Igra{
     let st = 0;
     for(let j=0; j<this.h; j++){
       for(let i=0; i<this.w; i++){
-        if(this.data[j][i] == " ")st++;
+        if(this.data[j][i] == 0)st++;
       }
     }
     if(st == 0)this.koncana = true;
@@ -45,7 +45,7 @@ class Igra{
     let moznosti = [];
     for(let i=0; i<this.w; i++){
       for(let j=this.h-1; j>=0; j--){
-        if(this.data[j][i] == " "){
+        if(this.data[j][i] == 0){
           moznosti.push(new Moznost(i,j));
           break;
         }
@@ -57,33 +57,43 @@ class Igra{
   ovrednoti(){
     //povej ali je kdo zmagal
     const n = this.vVrsto; //koliko znakov mora biti v vrsti
-    for(let j=0; j<this.h; j++){
-      for(let i=0; i<this.w; i++){
-        let znak = this.poglej(i,j);
+		let vrednost = 0;
+		let zmaga = 0;
+		const smeri = [
+			{x: 1, y: 0}, // vodoravno
+			{x: 0, y: 1}, // navpicno
+			{x: 1, y: 1}, // posevno dol
+			{x: -1, y: 1}, // posevno gor
+		];
+		for(let s=0; s<smeri.length; s++){
+			const smer = smeri[s];
+	    for(let j=0-Math.min(smer.y, 0); j<=this.h - Math.max(smer.y,0)*n; j++){
+	      for(let i=0-Math.min(smer.x,0); i<=this.w - Math.max(smer.x,0)*n; i++){
+	        // prestej koliko znakov je v vrsti
+					let vrstaA = 0;
+					let vrstaB = 0;
+					let vrstaMogoca = true;
 
-        //če si na preznem polju ne preverjaj kdo je zmagal
-        if(znak == " ")continue;
+					for(let k=0; k<n; k++){
+						if(this.poglej(i+smer.x*k,j+smer.y*k) == 1)vrstaA++;
+						if(this.poglej(i+smer.x*k,j+smer.y*k) == -1)vrstaB++;
+						if(this.poglej(i+smer.x*k,j+smer.y*k) === undefined)vrstaMogoca = false;
+					}
 
-        //na začetku predvidevaš, da imas N v vrsto
-        let vodoravno = true;
-        let navpicno = true;
-        let posevnoGor = true;
-        let posevnoDol = true;
-        for(let k=1; k<n; k++){
-          //preveri vse 4 smeri, če je vmes kakšen nepravilen znak ni zmage
-          if(this.poglej(i+k, j) != znak) vodoravno = false;
-          if(this.poglej(i, j+k) != znak) navpicno = false;
-          if(this.poglej(i+k, j+k) != znak) posevnoDol = false;
-          if(this.poglej(i-k, j+k) != znak) posevnoGor = false;
-        }
-        if(navpicno || vodoravno || posevnoGor || posevnoDol){
-          this.koncana = true;
-          this.zmagovalec = znak;
-          return znak;
-        }
-      }
+					if(vrstaMogoca){
+						if(vrstaA == 0)vrednost -= 10**vrstaB;
+						if(vrstaB == 0)vrednost += 10**vrstaA;
+					}
+					if(vrstaA == 4)zmaga = 1;
+					if(vrstaB == 4)zmaga = -1;
+	      }
+			}
     }
-    return " "; //izenačeno
+		if(zmaga != 0){
+			this.koncana = true;
+      this.zmagovalec = zmaga;
+		}
+    return {vrednost: vrednost, zmaga: zmaga}; //izenačeno
   }
 
   poglej(x,y){
@@ -99,11 +109,11 @@ class Igra{
     //če ni na igralni površini ne postavi
     if(x < 0 || y < 0 || x >= this.w || y >= this.h)return false;
     //če ni prosto polje ne postavi
-    if(this.data[y][x] != " ")return false;
+    if(this.data[y][x] != 0)return false;
 
     this.data[y][x] = this.naPotezi;
-    if(this.naPotezi == "X")this.naPotezi = "O";
-    else this.naPotezi = "X";
+    if(this.naPotezi == 1)this.naPotezi = -1;
+    else this.naPotezi = 1;
 
     //ovrednoti igro (nastavi koncana in zmagovalec)
     this.ovrednoti();
