@@ -81,8 +81,8 @@ class Igra{
 					}
 
 					if(vrstaMogoca){
-						if(vrstaA == 0)vrednost -= 10**vrstaB;
-						if(vrstaB == 0)vrednost += 10**vrstaA;
+						if(vrstaA == 0)vrednost -= 100**vrstaB;
+						if(vrstaB == 0)vrednost += 100**vrstaA;
 					}
 					if(vrstaA == 4)zmaga = 1;
 					if(vrstaB == 4)zmaga = -1;
