@@ -7,6 +7,7 @@ class Igra{
     this.data = [];
     this.koncana = false;
     this.zmagovalec = 0;
+		this.vrednost = 0;
 
     //napolni tabelo s 0
     for(let j=0; j<this.h; j++){
@@ -54,6 +55,7 @@ class Igra{
     return moznosti;
   }
 
+	// TODO: optimize
   ovrednoti(){
     //povej ali je kdo zmagal
     const n = this.vVrsto; //koliko znakov mora biti v vrsti
@@ -67,8 +69,8 @@ class Igra{
 		];
 		for(let s=0; s<smeri.length; s++){
 			const smer = smeri[s];
-	    for(let j=0-Math.min(smer.y, 0); j<=this.h - Math.max(smer.y,0)*n; j++){
-	      for(let i=0-Math.min(smer.x,0); i<=this.w - Math.max(smer.x,0)*n; i++){
+	    for(let j=0-Math.min(smer.y, 0)*(n-1); j<this.h - Math.max(smer.y,0)*(n-1); j++){
+	      for(let i=0-Math.min(smer.x,0)*(n-1); i<this.w - Math.max(smer.x,0)*(n-1); i++){
 	        // prestej koliko znakov je v vrsti
 					let vrstaA = 0;
 					let vrstaB = 0;
@@ -77,7 +79,9 @@ class Igra{
 					for(let k=0; k<n; k++){
 						if(this.poglej(i+smer.x*k,j+smer.y*k) == 1)vrstaA++;
 						if(this.poglej(i+smer.x*k,j+smer.y*k) == -1)vrstaB++;
-						if(this.poglej(i+smer.x*k,j+smer.y*k) === undefined)vrstaMogoca = false;
+						if(this.poglej(i+smer.x*k,j+smer.y*k) === undefined){
+							vrstaMogoca = false;
+						}
 					}
 
 					if(vrstaMogoca){
@@ -93,6 +97,8 @@ class Igra{
 			this.koncana = true;
       this.zmagovalec = zmaga;
 		}
+		this.vrednost = vrednost;
+		this.zmagovalec = zmaga;
     return {vrednost: vrednost, zmaga: zmaga}; //izenačeno
   }
 

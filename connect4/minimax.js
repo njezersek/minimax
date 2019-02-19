@@ -20,8 +20,8 @@ class Minimax{
       //ovrednoti moznost
       let novaIgra = igra.copy();
       novaIgra.postavi(moznost.x, moznost.y);
-      let vrednost = novaIgra.ovrednoti().vrednost;
-			let zmaga = novaIgra.ovrednoti().zmaga;
+      let vrednost = novaIgra.vrednost;
+			let zmaga = novaIgra.zmagovalec;
 
       //nastavi moznost
       moznost.oddaljenost = this.globina-n;
@@ -39,6 +39,16 @@ class Minimax{
         moznost.oddaljenost = ovrednotenaMoznost.oddaljenost;
       }
     }
+
+		if(true){
+			igra.prikazi();
+			console.log(n, "------");
+			let out1 = " * ";
+			let out2 = " * ";
+			for (let index = 0; index < moznosti.length; index++) {
+				console.log("x: " + moznosti[index].x + " z: " + moznosti[index].zmaga + " v: " + moznosti[index].vrednost);
+			}
+		}
 
     //izberi moznosti
     let vrednosti = moznosti.map(
